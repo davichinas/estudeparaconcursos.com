@@ -14,7 +14,7 @@ html{scroll-padding-top:env(safe-area-inset-top,0px);background:#05070d}
 *{box-sizing:border-box}
 body{margin:0;color:var(--ink);font:400 19px/1.55 "Atkinson Hyperlegible",Verdana,Arial,sans-serif;min-height:100vh}
 body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
-background:radial-gradient(60rem 32rem at 85% -10%,rgba(56,189,248,.20),transparent 60%),radial-gradient(44rem 30rem at -10% 35%,rgba(99,102,241,.18),transparent 60%),linear-gradient(rgba(125,211,252,.06) 1px,transparent 1px) 0 0/48px 48px,linear-gradient(90deg,rgba(125,211,252,.06) 1px,transparent 1px) 0 0/48px 48px}
+background:radial-gradient(60rem 32rem at 85% -10%,rgba(56,189,248,.20),transparent 60%),radial-gradient(44rem 30rem at -10% 35%,rgba(99,102,241,.18),transparent 60%)}
 main{max-width:1100px;margin:0 auto;padding:0 18px 56px}
 h1{font:800 clamp(1.7rem,5.5vw,2.6rem)/1.15 "Atkinson Hyperlegible",Verdana,Arial,sans-serif;letter-spacing:.01em;margin:0 0 14px}
 h2{font-size:1rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--pri);margin:36px 0 14px}
@@ -30,6 +30,10 @@ p{margin:0 0 12px}
 .btn:hover,.btn:focus-visible{background:var(--pri);color:#000;border-color:var(--pri);box-shadow:var(--glow);transform:translateY(-1px)}
 .btn:hover small,.btn:focus-visible small,.btn:hover .n,.btn:focus-visible .n{color:#000}
 .btn.main{text-align:center;border-color:var(--pri);color:var(--ink)}
+.btn.main:hover,.btn.main:focus-visible{color:#000}
+.item{display:flex;gap:10px;align-items:stretch;margin:0 0 12px}.item .btn{margin:0;width:auto;flex:1;min-width:0}
+.lixo{flex:none;width:58px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.03);color:var(--mute);border:1px solid var(--line);border-radius:12px;cursor:pointer;transition:color .2s,background .2s,border-color .2s}
+.lixo:hover,.lixo:focus-visible{color:var(--bad);border-color:var(--bad);background:rgba(255,138,128,.14)}
 .btn.area{display:flex;align-items:center;gap:18px}
 .btn .n{font:800 1.5rem "Atkinson Hyperlegible",Verdana,Arial,sans-serif;color:var(--pri);transition:color .2s}
 .btn[disabled]{opacity:.55;cursor:not-allowed}
@@ -168,13 +172,13 @@ return `<h1>Você acertou ${n} de ${e.q.length}</h1>
 <p class="tag ${a[k]===q[2]?'ok':'bad'}">${a[k]===q[2]?'Você acertou':'Você errou'}</p>
 <p>Sua resposta: ${q[1][a[k]]}<br>Resposta correta: <b>${q[1][q[2]]}</b></p><p><b>Explicação:</b> ${q[4]}</p></div>`).join('')+
 (pass&&!last?`<button class="btn main" data-go="area,${i}">Ir para a próxima etapa</button>`:'')+
-(!pass?`<button class="btn main" data-go="area,${i}">Revisar o conteúdo</button>`:`<button class="btn" data-go="area,${i}">Voltar às etapas</button>`)};
+(!pass?`<button class="btn main" data-go="area,${i}">Revisar o conteúdo</button>`:`<button class="btn main" data-go="area,${i}">Voltar às etapas</button>`)};
 
 /* NAVEGAÇÃO E EVENTOS */
 const login=()=>`<section class="hero"><p class="eyebrow">Acesso</p><h1>Entre para <span>salvar seu progresso</span></h1><p>Crie uma conta gratuita com seu e-mail. Seus estudos ficam salvos e você recebe o lembrete diário por e-mail.</p></section>
 <div class="box" style="margin-top:24px"><label for="em" style="font-weight:700">E-mail</label><input id="em" type="email" autocomplete="email">
 <label for="sn" style="font-weight:700">Senha (mínimo de 6 caracteres)</label><input id="sn" type="password" autocomplete="current-password">
-<button class="btn main" data-act="entrar">Entrar</button><button class="btn" data-act="criar">Criar conta</button><p id="msg" class="tag" role="alert" style="margin:0"></p></div>`;
+<button class="btn main" data-act="entrar">Entrar</button><button class="btn main" data-act="criar">Criar conta</button><p id="msg" class="tag" role="alert" style="margin:0"></p></div>`;
 
 /* ---------- NOVAS TELAS: sidebar, lembrete, perfil, fórum ---------- */
 const esc=t=>String(t??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));  /* evita código malicioso nos textos dos usuários */
@@ -205,9 +209,9 @@ const post=(p,tab)=>`<div class="box"><div class="who">${av(p.publico,40)}<div><
 
 /* Depois de desenhar a tela, estas funções buscam os dados no banco */
 const HOOK={
- async forum(){const{data,error}=await db.from('topicos').select('id,titulo,criado,publico(nome),respostas(count)').order('criado',{ascending:false}).limit(30);
+ async forum(){const{data,error}=await db.from('topicos').select('id,user_id,titulo,criado,publico(nome),respostas(count)').order('criado',{ascending:false}).limit(30);
   const x=document.getElementById('fx');if(!x)return;
-  x.innerHTML=error?'Erro ao carregar: '+esc(error.message):data.length?data.map(t=>`<button class="btn" data-go="topico,${t.id}">${esc(t.titulo)}<small>por ${esc(t.publico?.nome)} · ${dt(t.criado)} · ${t.respostas[0]?.count||0} respostas</small></button>`).join(''):'Ainda não há tópicos. Seja o primeiro!'},
+  x.innerHTML=error?'Erro ao carregar: '+esc(error.message):data.length?data.map(t=>`<div class="item"><button class="btn" data-go="topico,${t.id}">${esc(t.titulo)}<small>por ${esc(t.publico?.nome)} · ${dt(t.criado)} · ${t.respostas[0]?.count||0} respostas</small></button>${t.user_id===U.id?`<button class="lixo" data-act="apagar,topicos,${t.id}" aria-label="Apagar tópico" title="Apagar tópico"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14M10 11v6M14 11v6"/></svg></button>`:''}</div>`).join(''):'Ainda não há tópicos. Seja o primeiro!'},
  async topico(id){const[t,r]=await Promise.all([db.from('topicos').select('*,publico(nome,foto)').eq('id',id).maybeSingle(),db.from('respostas').select('*,publico(nome,foto)').eq('topico_id',id).order('criado')]);
   const x=document.getElementById('fx');if(!x)return;
   if(!t.data)return x.textContent='Tópico não encontrado.';
