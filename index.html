@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Estude para Concursos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+:root{--ink:#e6edf7;--mute:#a9b9d0;--pri:#7dd3fc;--ok:#5ee0a0;--bad:#ff8a80;--line:rgba(125,211,252,.24);--card:rgba(13,21,38,.72);--glow:0 0 26px rgba(125,211,252,.5);color-scheme:dark;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px);background:#05070d}
+*{box-sizing:border-box}
+body{margin:0;color:var(--ink);font:400 19px/1.55 "Atkinson Hyperlegible",Verdana,Arial,sans-serif;min-height:100vh}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+background:radial-gradient(60rem 32rem at 85% -10%,rgba(56,189,248,.20),transparent 60%),radial-gradient(44rem 30rem at -10% 35%,rgba(99,102,241,.18),transparent 60%),linear-gradient(rgba(125,211,252,.06) 1px,transparent 1px) 0 0/48px 48px,linear-gradient(90deg,rgba(125,211,252,.06) 1px,transparent 1px) 0 0/48px 48px}
+main{max-width:760px;margin:0 auto;padding:0 18px 56px}
+h1{font:800 clamp(1.7rem,5.5vw,2.6rem)/1.15 "Atkinson Hyperlegible",Verdana,Arial,sans-serif;letter-spacing:.01em;margin:0 0 14px}
+h2{font-size:1rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--pri);margin:36px 0 14px}
+h2::before{content:"// ";opacity:.6}
+h3{font-size:1.15rem;margin:0 0 6px}
+p{margin:0 0 12px}
+.hero{margin-top:20px;padding:34px 24px 28px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(135deg,rgba(125,211,252,.10),rgba(99,102,241,.08) 60%,transparent),var(--card);box-shadow:0 0 60px rgba(56,189,248,.10) inset}
+.hero h1 span{background:linear-gradient(90deg,#fff,var(--pri) 60%,#a5b4fc);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{font-size:1.1rem;max-width:34em;color:var(--mute)}
+.hero .eyebrow{font:700 .8rem "Atkinson Hyperlegible",Verdana,Arial,sans-serif;letter-spacing:.22em;text-transform:uppercase;color:var(--pri);margin-bottom:10px}
+.btn{display:block;width:100%;text-align:left;font:inherit;font-weight:700;color:#cbd8ea;background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:0 0 12px;cursor:pointer;text-decoration:none;transition:background .2s,color .2s,box-shadow .2s,border-color .2s,transform .2s}
+.btn small{display:block;font-weight:400;color:var(--mute);transition:color .2s}
+.btn:hover,.btn:focus-visible{background:var(--pri);color:#000;border-color:var(--pri);box-shadow:var(--glow);transform:translateY(-1px)}
+.btn:hover small,.btn:focus-visible small,.btn:hover .n,.btn:focus-visible .n{color:#000}
+.btn.main{text-align:center;border-color:var(--pri);color:var(--ink)}
+.btn.area{display:flex;align-items:center;gap:18px}
+.btn .n{font:800 1.5rem "Atkinson Hyperlegible",Verdana,Arial,sans-serif;color:var(--pri);transition:color .2s}
+.btn[disabled]{opacity:.55;cursor:not-allowed}
+:focus-visible{outline:2px solid var(--pri);outline-offset:3px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:0 0 16px;backdrop-filter:blur(6px)}
+.links a{display:inline-block;margin:4px 14px 4px 0;color:var(--pri);font-weight:700}
+.tag{font-weight:700}.ok{color:var(--ok)}.bad{color:var(--bad)}
+label.op{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border:1px solid var(--line);border-radius:12px;margin:8px 0;cursor:pointer;transition:border-color .2s,background .2s}
+label.op:hover,label.op:has(input:checked){border-color:var(--pri);background:rgba(125,211,252,.10)}
+label.op input{width:24px;height:24px;margin:0;flex:none;accent-color:var(--pri)}
+fieldset{border:0;padding:0;margin:0 0 22px}
+legend{font-weight:700;margin-bottom:6px}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:end}
+.row label{display:block;font-weight:700}
+input[type=number],input[type=time],input[type=email],input[type=password]{font:inherit;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.04);color:var(--ink);width:9em}
+input[type=email],input[type=password]{width:100%;display:block;margin:6px 0 16px}
+input:focus{outline:none;border-color:var(--pri);box-shadow:0 0 0 3px rgba(125,211,252,.25)}
+.back{background:none;border:0;color:var(--pri);font:inherit;font-weight:700;padding:18px 0 0;cursor:pointer}
+.back:hover{text-decoration:underline}
+.vid{position:relative;aspect-ratio:16/9;margin:6px 0 2px}.vid iframe{position:absolute;inset:0;width:100%;height:100%;border:0;border-radius:12px}
+.bar{display:block;height:10px;background:rgba(255,255,255,.08);border-radius:6px;margin-top:6px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,#38bdf8,#a5b4fc);box-shadow:0 0 12px rgba(56,189,248,.6)}
+@media (prefers-reduced-motion:reduce){.btn{transition:none}.btn:hover{transform:none}}
+</style>
+</head>
+<body>
+<main id="app"></main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.0/dist/umd/supabase.js"></script>
+<script>
+/* CONFIGURAÇÃO: cole aqui os dados do seu projeto (Supabase > Project Settings > API) */
+const SB_URL='https://cyqiowjszqzanosypubu.supabase.co',SB_KEY='sb_publishable_oy7DoykQQo8pUfu0lhyWig_2OFwCPHH';
+/* DADOS — para criar novos concursos/etapas/vídeos, basta editar aqui (DRY).
+   Tópico: {n:nome, d:descrição, v:[[idDoYouTube, título],...]}  (sem "v" = só links de busca)
+   Questão: [pergunta, opções, índiceCorreto, índiceDoTópico, explicação] */
+const GG='Gis com Giz';
+const D=[
+{id:'adm',nome:'Administração',desc:'Cargos administrativos em prefeituras, estados e órgãos federais.',e:[
+ {t:'Matemática básica',tp:[
+  {n:'Regra de três',d:'Método para descobrir um valor desconhecido a partir de grandezas proporcionais. Na regra direta, as duas grandezas crescem juntas; na inversa, uma cresce e a outra diminui.',v:[['CQFFaa9fmS0','Regra de três simples e composta: resumão ('+GG+')'],['mnle8NcUYkQ','Regra de três simples ('+GG+')'],['VS7D8aJH_k4','Regra de três simples inversa para concursos (Focus Concursos)']]},
+  {n:'Porcentagem',d:'Porcentagem é uma parte de 100. Assim, 20% = 20/100 = 0,2. Para achar a porcentagem de um valor, multiplique o valor pelo número decimal.'}],q:[
+  ['Se 3 canetas custam R$ 6, quanto custam 5 canetas?',['R$ 8','R$ 10','R$ 12','R$ 15'],1,0,'Cada caneta custa 6 ÷ 3 = R$ 2. Então 5 canetas custam 5 × 2 = R$ 10. É regra de três direta: mais canetas, mais dinheiro.'],
+  ['Quanto é 20% de 150?',['15','20','30','35'],2,1,'20% = 0,2, e 0,2 × 150 = 30. Dica: 10% de 150 é 15, e 20% é o dobro disso. Quem marcou 15 calculou só 10%.'],
+  ['4 operários fazem uma obra em 12 dias. Em quantos dias 6 operários, no mesmo ritmo, fazem a mesma obra?',['6','8','9','18'],1,0,'É regra de três inversa: mais operários, menos dias. O trabalho total é 4 × 12 = 48. Com 6 operários: 48 ÷ 6 = 8 dias. Quem marcou 18 tratou como regra direta.']]},
+ {t:'Administração geral',tp:[
+  {n:'Funções da administração',d:'As quatro funções clássicas são: planejar (definir objetivos), organizar (dividir tarefas e recursos), dirigir (orientar pessoas) e controlar (acompanhar resultados).'},
+  {n:'Princípios da administração pública',d:'O artigo 37 da Constituição lista cinco princípios: Legalidade, Impessoalidade, Moralidade, Publicidade e Eficiência (o famoso "LIMPE").'}],q:[
+  ['Qual destas NÃO é uma das quatro funções clássicas da administração?',['Planejar','Organizar','Vender','Controlar'],2,0,'As funções clássicas são planejar, organizar, dirigir e controlar. Vender é uma atividade da empresa, não uma função da administração.'],
+  ['O princípio da Legalidade diz que o administrador público deve:',['Fazer o que a lei permite','Fazer tudo o que não é proibido','Seguir apenas a opinião do chefe','Agir como achar melhor'],0,1,'O servidor público só pode fazer o que a lei autoriza. Fazer tudo o que a lei não proíbe vale para o cidadão comum, e essa é a pegadinha mais comum.'],
+  ['Na função "controlar", o objetivo é:',['Contratar pessoas','Comparar o resultado com o planejado e corrigir desvios','Definir a missão da empresa','Aumentar os preços'],1,0,'Controlar é verificar se o resultado bate com o planejado e corrigir desvios. Contratar pessoas faz parte de organizar, e definir a missão faz parte de planejar.']]}]},
+{id:'tri',nome:'Tribunais',desc:'Cargos de técnico e analista no Judiciário.',e:[
+ {t:'Português',tp:[
+  {n:'Plural das palavras',d:'Palavras terminadas em -ão podem fazer o plural em -ões (limão, limões), -ãos (mão, mãos) ou -ães (pão, pães). Não há regra única: é preciso memorizar os casos comuns.'},
+  {n:'Verbo haver',d:'Quando "haver" significa existir ou acontecer, ele é impessoal e fica sempre no singular: "Há problemas", "Houve festas".'},
+  {n:'Crase',d:'Crase é a fusão da preposição "a" com o artigo "a". Truque: troque a palavra feminina por uma masculina. Se der "ao", use crase.'}],q:[
+  ['Qual é o plural de "cidadão"?',['Cidadões','Cidadãos','Cidadães','Cidadãoes'],1,0,'Cidadão faz plural em -ãos, como mão e irmão. Não existe "cidadões".'],
+  ['Qual frase está correta?',['Houveram muitos problemas.','Houve muitos problemas.','Haviam muitos problemas.','Houveram-se muitos problemas.'],1,1,'Haver no sentido de existir é impessoal e fica no singular: "Houve". "Houveram" e "Haviam" estão errados nesse sentido.'],
+  ['Complete: "Fui ___ escola."',['a','à','as','às'],1,2,'Quem vai, vai A algum lugar (preposição), e "escola" aceita o artigo A (a escola). Preposição + artigo = à. Teste: "Fui ao colégio" pede "ao", então há crase.']]},
+ {t:'Direito Constitucional',tp:[
+  {n:'Poderes da União',d:'O artigo 2º da Constituição define que os Poderes da União são independentes e harmônicos entre si: Legislativo (faz as leis), Executivo (administra) e Judiciário (julga).'},
+  {n:'Direitos fundamentais',d:'O artigo 5º reúne os direitos e garantias fundamentais, como a igualdade de todos perante a lei, a liberdade e a vida.'},
+  {n:'Direitos políticos',d:'O voto é obrigatório de 18 a 70 anos. É facultativo (opcional) para analfabetos, maiores de 70 e jovens de 16 e 17 anos.'}],q:[
+  ['Quais são os três Poderes da União?',['Federal, Estadual e Municipal','Legislativo, Executivo e Judiciário','Civil, Penal e Militar','Presidente, Senado e Câmara'],1,0,'Os três Poderes (art. 2º) são Legislativo, Executivo e Judiciário. Federal, estadual e municipal são esferas de governo, e não Poderes.'],
+  ['"Todos são iguais perante a lei" expressa o princípio da:',['Igualdade','Publicidade','Eficiência','Anterioridade'],0,1,'Essa frase está no art. 5º e expressa o princípio da igualdade (isonomia). Publicidade e eficiência são princípios da administração pública.'],
+  ['Para quem tem mais de 70 anos, o voto é:',['Obrigatório','Proibido','Facultativo','Apenas por carta'],2,2,'Depois dos 70 anos o voto é facultativo: a pessoa vota se quiser. A obrigatoriedade vai dos 18 aos 70 anos.']]}]},
+{id:'ban',nome:'Área bancária',desc:'Bancos públicos, como escriturário e atendente.',e:[
+ {t:'Matemática financeira',tp:[
+  {n:'Juros simples',d:'Nos juros simples, o rendimento é calculado sempre sobre o valor inicial. Fórmula: J = C × i × t (capital × taxa × tempo).'},
+  {n:'Desconto e porcentagem',d:'Para calcular um desconto, ache a porcentagem do preço e subtraia. Preço final = preço × (1 − taxa de desconto).'}],q:[
+  ['R$ 1.000 a juros simples de 2% ao mês, por 3 meses. Quanto rendem de juros?',['R$ 20','R$ 60','R$ 600','R$ 1.060'],1,0,'J = 1.000 × 0,02 × 3 = R$ 60. Quem marcou R$ 1.060 somou o capital: isso é o montante, e não os juros.'],
+  ['Uma peça de R$ 200 tem desconto de 10%. Qual o preço final?',['R$ 180','R$ 190','R$ 170','R$ 20'],0,1,'10% de 200 = 20. Preço final = 200 − 20 = R$ 180. R$ 20 é só o valor do desconto.'],
+  ['R$ 400 a juros simples de 5% ao ano, por 1 ano. Quanto rendem?',['R$ 5','R$ 20','R$ 200','R$ 420'],1,0,'J = 400 × 0,05 × 1 = R$ 20. R$ 420 seria o montante (capital + juros).']]},
+ {t:'Informática básica',tp:[
+  {n:'Internet e navegadores',d:'Navegador é o programa usado para acessar sites, como Chrome, Firefox, Edge e Safari. Não confunda com mecanismo de busca (Google), que é um site.'},
+  {n:'Segurança digital',d:'Golpes digitais tentam enganar a pessoa para roubar dados. Boas práticas: senhas longas e diferentes, desconfiar de links recebidos e nunca passar códigos por mensagem.'}],q:[
+  ['Qual programa é um navegador de internet?',['Word','Excel','Chrome','Paint'],2,0,'Chrome é um navegador, usado para abrir sites. Word é editor de texto, Excel é planilha e Paint é programa de desenho.'],
+  ['Phishing é:',['Um tipo de planilha','Um golpe com mensagens falsas para roubar dados','Um antivírus','Um site de busca'],1,1,'Phishing é o golpe em que o criminoso se passa por banco, loja ou órgão público, por mensagem ou site falso, para roubar senhas e dados.'],
+  ['Qual senha é a mais segura?',['123456','senha','seunome1990','Tr#9mP!x2Lq7'],3,1,'Senha segura é longa e mistura letras maiúsculas, minúsculas, números e símbolos, sem nome nem datas pessoais. As outras são fáceis de adivinhar.']]}]}
+];
+
+/* ESTADO */
+const NOVO=()=>({ok:{},q:{},meta:{min:30,hora:'19:00',on:false}});
+let S=NOVO(),U=null,db=null;
+/* Salva tudo de uma vez na tabela "perfis" (progresso + meta). O servidor lê a meta para enviar o e-mail. */
+const save=async()=>{if(!U)return;const{error}=await db.from('perfis').upsert({user_id:U.id,email:U.email,dados:{ok:S.ok,q:S.q},minutos:S.meta.min,hora:S.meta.hora,ativo:S.meta.on});if(error)alert('Não foi possível salvar: '+error.message)};
+const carregar=async()=>{const{data}=await db.from('perfis').select('*').eq('user_id',U.id).maybeSingle();
+ if(data)S={ok:data.dados?.ok||{},q:data.dados?.q||{},meta:{min:data.minutos,hora:data.hora.slice(0,5),on:data.ativo}}};
+const PASS=2;                                   /* acertos mínimos para avançar */
+const key=(i,j)=>D[i].id+j;
+const open=(i,j)=>j===0||(S.ok[key(i,j-1)]??-1)>=PASS;
+const enc=encodeURIComponent;
+let V=['home'],R=null;
+
+/* LINKS GRATUITOS — um único gerador para todo conteúdo (DRY) */
+const L=(t,sv)=>[
+ sv?null:['Videoaulas','https://www.youtube.com/results?search_query='+enc(t+' aula concurso público')],
+ ['Artigos','https://www.google.com/search?q='+enc(t+' artigo concurso público')],
+ ['Livros e apostilas grátis','https://www.google.com/search?q='+enc(t+' apostila livro pdf gratuito')]
+].filter(Boolean).map(([n,u])=>`<a href="${u}" target="_blank" rel="noopener">${n}</a>`).join('');
+
+const tema=t=>`<h3>${t.n}</h3><p>${t.d}</p>`+(t.v||[]).map(([id,ti])=>`<p style="margin:12px 0 0"><b>${ti}</b></p><div class="vid"><iframe src="https://www.youtube-nocookie.com/embed/${id}" title="${ti}" loading="lazy" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div><p class="links" style="margin:0 0 6px"><a href="https://www.youtube.com/watch?v=${id}" target="_blank" rel="noopener">Se o vídeo não abrir, assista no YouTube</a></p>`).join('')+`<p class="links">${L(t.n,t.v)}</p>`;
+const back=(to,txt)=>`<button class="back" data-go="${to}">← ${txt}</button>`;
+
+/* TELAS */
+const home=()=>`
+<section class="hero"><p class="eyebrow">Plataforma de estudos gratuita</p><h1>Estude para concursos públicos, <span>de graça</span></h1>
+<p>Escolha a área do concurso, estude no seu ritmo e faça um simulado ao final de cada etapa.</p></section>
+<h2>1. Escolha a área do concurso</h2>
+${D.map((a,i)=>`<button class="btn area" data-go="area,${i}"><span class="n">0${i+1}</span><span>${a.nome}<small>${a.desc}</small></span></button>`).join('')}
+${painel()}
+<h2>2. Meta de estudo diária</h2>
+<div class="box"><p>Diga quanto tempo você quer estudar por dia e a que horas quer ser lembrado.</p>
+<div class="row"><div><label for="min">Minutos por dia</label><input id="min" type="number" min="5" max="600" step="5" value="${S.meta.min}"></div>
+<div><label for="hora">Horário do lembrete</label><input id="hora" type="time" value="${S.meta.hora}"></div></div>
+<p style="margin-top:14px"><button class="btn main" data-act="meta" style="margin:0">Salvar minha meta</button></p>
+<p id="metaMsg" class="tag" role="status">${S.meta.on?`Meta ativa: ${S.meta.min} min por dia, lembrete às ${S.meta.hora}.`:''}</p>
+<p style="color:var(--mute);font-size:.9rem;margin:0">O lembrete é enviado por e-mail, no horário escolhido (horário de Brasília), mesmo com o site fechado.</p></div>`;
+
+const painel=()=>{const m={};Object.values(S.q).forEach(([t,o])=>{m[t]=m[t]||[0,0];m[t][0]+=o;m[t][1]++});const k=Object.keys(m);if(!k.length)return'';
+return '<h2>Meu desempenho por tema</h2><div class="box">'+k.map(t=>{const[a,n]=m[t],p=Math.round(100*a/n);return `<p style="margin:0 0 14px"><b>${t}</b>: ${a} de ${n} (${p}%) — <span class="tag ${p>=60?'ok':'bad'}">${p>=60?'Bom desempenho':'Precisa revisar'}</span><span class="bar"><i style="width:${p}%"></i></span></p>`}).join('')+'<p style="margin:0;color:var(--mute);font-size:.9rem">Baseado na sua última resposta em cada questão.</p></div>'};
+const area=i=>{const a=D[i];return back('home','Voltar às áreas')+`<h1>${a.nome}</h1><p>Estude cada etapa na ordem. Para avançar, acerte pelo menos ${PASS} de 3 questões do simulado.</p>`+
+a.e.map((e,j)=>{const s=S.ok[key(i,j)],lib=open(i,j);return `<h2>Etapa ${j+1}: ${e.t}</h2>
+<div class="box">${lib?e.tp.map(tema).join('')+
+`<button class="btn main" data-go="quiz,${i},${j}">Fazer o simulado da etapa ${j+1}</button>`+
+(s!==undefined?`<p class="tag ${s>=PASS?'ok':'bad'}">Último resultado: ${s} de ${e.q.length} acertos${s>=PASS?'. Etapa concluída!':'. Estude mais e tente de novo.'}</p>`:'')
+:`<p class="tag">Etapa bloqueada. Conclua a etapa ${j} para liberar.</p>`}</div>`}).join('')};
+
+const quiz=(i,j)=>{const e=D[i].e[j];return back('area,'+i,'Voltar às etapas')+`<h1>Simulado: ${e.t}</h1><p>Escolha uma resposta em cada questão.</p><div id="qz">`+
+e.q.map((q,n)=>`<fieldset><legend>${n+1}. ${q[0]}</legend>${q[1].map((o,k)=>`<label class="op"><input type="radio" name="q${n}" value="${k}"> <span>${o}</span></label>`).join('')}</fieldset>`).join('')+
+`</div><button class="btn main" data-act="send,${i},${j}">Ver resultado e gabarito</button><p id="erro" class="bad tag" role="alert"></p>`};
+
+const result=()=>{const{i,j,a}=R,e=D[i].e[j],n=a.filter((x,k)=>x===e.q[k][2]).length,pass=n>=PASS,last=j===D[i].e.length-1;
+return `<h1>Você acertou ${n} de ${e.q.length}</h1>
+<p class="tag ${pass?'ok':'bad'}">${pass?(last?'Parabéns! Você concluiu todas as etapas desta área.':'Muito bem! A próxima etapa foi liberada.'):'Ainda não foi desta vez. Revise o conteúdo e tente de novo.'}</p>
+<h2>Gabarito</h2>`+e.q.map((q,k)=>`<div class="box"><p><b>${k+1}. ${q[0]}</b></p>
+<p class="tag ${a[k]===q[2]?'ok':'bad'}">${a[k]===q[2]?'Você acertou':'Você errou'}</p>
+<p>Sua resposta: ${q[1][a[k]]}<br>Resposta correta: <b>${q[1][q[2]]}</b></p><p><b>Explicação:</b> ${q[4]}</p></div>`).join('')+
+(pass&&!last?`<button class="btn main" data-go="area,${i}">Ir para a próxima etapa</button>`:'')+
+(!pass?`<button class="btn main" data-go="area,${i}">Revisar o conteúdo</button>`:`<button class="btn" data-go="area,${i}">Voltar às etapas</button>`)};
+
+/* NAVEGAÇÃO E EVENTOS */
+const login=()=>`<section class="hero"><p class="eyebrow">Acesso</p><h1>Entre para <span>salvar seu progresso</span></h1><p>Crie uma conta gratuita com seu e-mail. Seus estudos ficam salvos e você recebe o lembrete diário por e-mail.</p></section>
+<div class="box" style="margin-top:24px"><label for="em" style="font-weight:700">E-mail</label><input id="em" type="email" autocomplete="email">
+<label for="sn" style="font-weight:700">Senha (mínimo de 6 caracteres)</label><input id="sn" type="password" autocomplete="current-password">
+<button class="btn main" data-act="entrar">Entrar</button><button class="btn" data-act="criar">Criar conta</button><p id="msg" class="tag" role="alert" style="margin:0"></p></div>`;
+const VIEWS={login,home,area:(i)=>area(+i),quiz:(i,j)=>quiz(+i,+j),result};
+const render=()=>{document.getElementById('app').innerHTML=(U?`<div style="text-align:right"><button class="back" data-act="sair">Sair (${U.email})</button></div>`:'')+VIEWS[V[0]](...V.slice(1));scrollTo(0,0)};
+document.addEventListener('click',async ev=>{
+ const b=ev.target.closest('[data-go],[data-act]');if(!b)return;
+ if(b.dataset.go){V=b.dataset.go.split(',');return render()}
+ const[act,i,j]=b.dataset.act.split(',');
+ if(act==='entrar'||act==='criar'){
+  const msg=document.getElementById('msg'),email=document.getElementById('em').value.trim(),password=document.getElementById('sn').value;
+  if(!email||password.length<6)return msg.textContent='Digite o e-mail e uma senha com pelo menos 6 caracteres.';
+  msg.textContent='Aguarde...';
+  const r=await (act==='entrar'?db.auth.signInWithPassword({email,password}):db.auth.signUp({email,password}));
+  if(r.error)return msg.textContent='Não foi possível continuar: '+r.error.message;
+  if(!r.data.session)return msg.textContent='Conta criada! Abra o link que enviamos ao seu e-mail e depois clique em Entrar.';
+  return iniciar(r.data.session.user)}
+ if(act==='sair'){await db.auth.signOut();U=null;S=NOVO();V=['login'];return render()}
+ if(act==='send'){
+  const a=D[i].e[j].q.map((_,n)=>{const r=document.querySelector(`input[name=q${n}]:checked`);return r?+r.value:-1});
+  if(a.includes(-1))return document.getElementById('erro').textContent='Responda todas as questões para ver o resultado.';
+  const pts=a.filter((x,k)=>x===D[i].e[j].q[k][2]).length;
+  S.ok[key(+i,+j)]=pts;D[i].e[j].q.forEach((q,k)=>S.q[key(+i,+j)+'_'+k]=[D[i].e[j].tp[q[3]].n,a[k]===q[2]?1:0]);await save();R={i:+i,j:+j,a};V=['result'];render()}
+ if(act==='meta'){
+  S.meta={min:+document.getElementById('min').value||30,hora:document.getElementById('hora').value||'19:00',on:true};await save();
+  document.getElementById('metaMsg').textContent=`Meta salva: ${S.meta.min} min por dia, e-mail de lembrete às ${S.meta.hora}.`}
+});
+
+
+
+const iniciar=async u=>{U=u;await carregar();await save();V=['home'];render()};
+(async()=>{
+ if(SB_URL.startsWith('COLE'))return document.getElementById('app').innerHTML='<h1>Falta configurar</h1><p>Cole a URL e a chave do Supabase no início do código (veja as instruções).</p>';
+ db=supabase.createClient(SB_URL,SB_KEY);
+ const{data}=await db.auth.getSession();
+ data.session?iniciar(data.session.user):(V=['login'],render());
+})();
+</script>
+</body>
+</html>
