@@ -63,6 +63,8 @@ input:focus{outline:none;border-color:var(--pri);box-shadow:0 0 0 3px rgba(125,2
 .who{display:flex;align-items:center;gap:12px;margin-bottom:10px;word-break:break-word}
 .av{width:var(--s,40px);height:var(--s,40px);border-radius:50%;object-fit:cover;flex:none;display:inline-flex;align-items:center;justify-content:center;background:rgba(125,211,252,.18);color:var(--pri);font-weight:700;border:1px solid var(--line)}
 @media (max-width:820px){.shell{grid-template-columns:1fr}.side{position:static;flex-direction:row;flex-wrap:wrap}.who{width:100%}.side .btn{width:auto;flex:1 1 40%}}
+.ast{color:#ff4d4d;font-weight:700}
+.req{margin:2px 0 8px;color:var(--mute);font-size:.95rem}.req ul{margin:4px 0 0;padding-left:22px}
 @media (prefers-reduced-motion:reduce){.btn{transition:none}.btn:hover{transform:none}}
 </style>
 </head>
@@ -107,8 +109,8 @@ const D=[
   ['Para quem tem mais de 70 anos, o voto é:',['Obrigatório','Proibido','Facultativo','Apenas por carta'],2,2,'Depois dos 70 anos o voto é facultativo: a pessoa vota se quiser. A obrigatoriedade vai dos 18 aos 70 anos.']]}]},
 {id:'ban',nome:'Área bancária',desc:'Bancos públicos, como escriturário e atendente.',e:[
  {t:'Matemática financeira',tp:[
-  {n:'Juros simples',d:'Nos juros simples, o rendimento é calculado sempre sobre o valor inicial. Fórmula: J = C × i × t (capital × taxa × tempo).'},
-  {n:'Desconto e porcentagem',d:'Para calcular um desconto, ache a porcentagem do preço e subtraia. Preço final = preço × (1 − taxa de desconto).'}],q:[
+  {n:'Juros simples',d:'Nos juros simples, o rendimento é calculado sempre sobre o valor inicial. Fórmula: J = C × i × t (capital × taxa × tempo).',v:[['aZcETuhXxPw','Juros Simples (Gis com Giz)']]},
+  {n:'Desconto e porcentagem',d:'Para calcular um desconto, ache a porcentagem do preço e subtraia. Preço final = preço × (1 − taxa de desconto).',v:[['3EefFSEF8Ds','Porcentagem, aumento e desconto (Dicasdemat Sandro Curió)']]}],q:[
   ['R$ 1.000 a juros simples de 2% ao mês, por 3 meses. Quanto rendem de juros?',['R$ 20','R$ 60','R$ 600','R$ 1.060'],1,0,'J = 1.000 × 0,02 × 3 = R$ 60. Quem marcou R$ 1.060 somou o capital: isso é o montante, e não os juros.'],
   ['Uma peça de R$ 200 tem desconto de 10%. Qual o preço final?',['R$ 180','R$ 190','R$ 170','R$ 20'],0,1,'10% de 200 = 20. Preço final = 200 − 20 = R$ 180. R$ 20 é só o valor do desconto.'],
   ['R$ 400 a juros simples de 5% ao ano, por 1 ano. Quanto rendem?',['R$ 5','R$ 20','R$ 200','R$ 420'],1,0,'J = 400 × 0,05 × 1 = R$ 20. R$ 420 seria o montante (capital + juros).']]},
@@ -175,10 +177,11 @@ return `<h1>Você acertou ${n} de ${e.q.length}</h1>
 (!pass?`<button class="btn main" data-go="area,${i}">Revisar o conteúdo</button>`:`<button class="btn main" data-go="area,${i}">Voltar às etapas</button>`)};
 
 /* NAVEGAÇÃO E EVENTOS */
-const login=()=>`<section class="hero"><p class="eyebrow">Seja Bem-Vindo</p><h1>Faça seu cadastro para <span>salvar seu progresso</span></h1><p>Crie uma conta gratuita com seu e-mail. Seus estudos ficam salvos e você recebe o lembrete diário por e-mail.</p></section>
-<div class="box" style="margin-top:24px"><label for="em" style="font-weight:700">E-mail</label><input id="em" type="email" autocomplete="email">
-<label for="sn" style="font-weight:700">Senha (mínimo de 6 caracteres)</label><input id="sn" type="password" autocomplete="current-password">
-<button class="btn main" data-act="entrar">Entrar</button><button class="btn main" data-act="criar">Criar conta</button><p id="msg" class="tag" role="alert" style="margin:0"></p></div>`;
+let CAD=false;  /* true = formulário em modo "criar conta" */
+const login=()=>(CAD=false,`<section class="hero"><p class="eyebrow">Seja Bem-Vindo</p><h1>Faça seu cadastro para <span>salvar seu progresso</span></h1><p>Crie uma conta gratuita com seu e-mail. Seus estudos ficam salvos e você recebe o lembrete diário por e-mail.</p></section>
+<div class="box" style="margin-top:24px"><label for="em" style="font-weight:700">E-mail<span class="ast" id="ae" hidden> *</span></label><input id="em" type="email" autocomplete="email">
+<label for="sn" style="font-weight:700">Senha<span class="ast" id="as" hidden> *</span></label><div id="req" class="req" hidden><span class="ast">*</span> Requisitos da senha:<ul><li>Mínimo de 8 caracteres</li><li>Uma letra maiúscula</li><li>Uma letra minúscula</li><li>Um número</li><li>Um símbolo (como ! ou @)</li></ul></div><input id="sn" type="password" autocomplete="current-password">
+<button class="btn main" data-act="entrar">Entrar</button><button class="btn main" data-act="criar">Criar conta</button><p id="msg" class="tag" role="alert" style="margin:0"></p></div>`);
 
 /* ---------- NOVAS TELAS: sidebar, lembrete, perfil, fórum ---------- */
 const esc=t=>String(t??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));  /* evita código malicioso nos textos dos usuários */
@@ -230,7 +233,11 @@ document.addEventListener('click',async ev=>{
  const[act,i,j]=b.dataset.act.split(',');
  if(act==='entrar'||act==='criar'){
   const msg=document.getElementById('msg'),email=document.getElementById('em').value.trim(),password=document.getElementById('sn').value;
-  if(!email||password.length<6)return msg.textContent='Digite o e-mail e uma senha com pelo menos 6 caracteres.';
+  const mostrar=on=>{CAD=on;['ae','as','req'].forEach(id=>document.getElementById(id).hidden=!on)};
+  if(act==='entrar')mostrar(false);
+  if(act==='criar'&&!CAD){mostrar(true);return msg.textContent='Confira os requisitos da senha e clique em Criar conta de novo.'}
+  if(!email||!password)return msg.textContent='Digite o e-mail e a senha.';
+  if(act==='criar'&&!(password.length>=8&&/[a-z]/.test(password)&&/[A-Z]/.test(password)&&/\d/.test(password)&&/[^A-Za-z0-9]/.test(password)))return msg.textContent='A senha não cumpre os requisitos acima.';
   msg.textContent='Aguarde...';
   const r=await (act==='entrar'?db.auth.signInWithPassword({email,password}):db.auth.signUp({email,password}));
   if(r.error)return msg.textContent='Não foi possível continuar: '+r.error.message;
