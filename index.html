@@ -254,7 +254,7 @@ document.addEventListener('click',async ev=>{
   if(!email||!password)return msg.textContent='Digite o e-mail e a senha.';
   if(act==='criar'&&!(password.length>=8&&/[a-z]/.test(password)&&/[A-Z]/.test(password)&&/\d/.test(password)&&/[^A-Za-z0-9]/.test(password)))return msg.textContent='A senha não cumpre os requisitos acima.';
   msg.textContent='Aguarde...';
-  const r=await (act==='entrar'?db.auth.signInWithPassword({email,password}):db.auth.signUp({email,password}));
+  const r=await (act==='entrar'?db.auth.signInWithPassword({email,password}):db.auth.signUp({email,password,options:{emailRedirectTo:location.origin+location.pathname}}));
   if(r.error)return msg.textContent='Não foi possível continuar: '+r.error.message;
   if(!r.data.session)return msg.textContent='Conta criada! Abra o link que enviamos ao seu e-mail e depois clique em Entrar.';
   return iniciar(r.data.session.user)}
