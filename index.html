@@ -65,7 +65,6 @@ input:focus{outline:none;border-color:var(--pri);box-shadow:0 0 0 3px rgba(125,2
 @media (max-width:820px){.shell{grid-template-columns:1fr}.side{position:static;flex-direction:row;flex-wrap:wrap}.who{width:100%}.side .btn{width:auto;flex:1 1 40%}}
 .ast{color:#ff4d4d;font-weight:700}
 .req{margin:2px 0 8px;color:var(--mute);font-size:.95rem}.req ul{margin:4px 0 0;padding-left:22px}
-.fonte{color:var(--mute);font-size:.88rem;margin:0 0 8px}
 @media (prefers-reduced-motion:reduce){.btn{transition:none}.btn:hover{transform:none}}
 </style>
 </head>
@@ -77,64 +76,51 @@ input:focus{outline:none;border-color:var(--pri);box-shadow:0 0 0 3px rgba(125,2
 const SB_URL='https://cyqiowjszqzanosypubu.supabase.co',SB_KEY='sb_publishable_oy7DoykQQo8pUfu0lhyWig_2OFwCPHH';
 /* DADOS — para criar novos concursos/etapas/vídeos, basta editar aqui (DRY).
    Tópico: {n:nome, d:descrição, v:[[idDoYouTube, título],...]}  (sem "v" = só links de busca)
-   Questão: [pergunta, opções, índiceCorreto, índiceDoTópico, explicação, fonte] */
-/* Fonte de cada questão: banca, órgão, cargo, ano, prova objetiva e número da questão */
-const fo=b=>n=>b+n+'.';
-const bb=fo('CESGRANRIO. Banco do Brasil. Escriturário – Agente Comercial, edital de 2022. Prova objetiva, questão ');
-const pa=fo('CEV/UECE. Procuradoria-Geral do Estado do Ceará (PGE-CE). Técnico de Representação Judicial – Área Administrativa, 2025. Prova objetiva, questão ');
-const pd=fo('CEV/UECE. Procuradoria-Geral do Estado do Ceará (PGE-CE). Técnico de Representação Judicial – Área de Direito, 2025. Prova objetiva, questão ');
-
-/* Resumos explicativos (usados no conteúdo do tópico e na explicação do gabarito) */
-const RES={
- bb21:'A moeda cumpre três funções clássicas: meio de troca, unidade de conta e reserva de valor. Ao ser usada no ato da compra para quitar um bem ou serviço, elimina a necessidade de escambo e atua diretamente como instrumento imediato de troca ou pagamento.',
- bb22:'Devido à alta complexidade e ao elevado custo computacional da mineração individual, mineradores associam-se em pools de mineração. Ao combinarem seu poder de processamento (hashrate), aumentam a chance de minerar blocos e dividem o prêmio proporcionalmente.',
- bb26:'Se R$ 4.500 equivale a 22,5% do imposto, o total de juros brutos foi J = 4.500 / 0,225 = R$ 20.000. A taxa diária é 1,5% / 30 = 0,05% ao dia (0,0005). Usando J = C × i × t: 20.000 = C × 0,0005 × 50 ➔ 20.000 = 0,025 C ➔ C = R$ 800.000,00.',
- bb31:'O Código de Ética das grandes instituições financeiras públicas preconiza a valorização do ser humano, a promoção da equidade e o respeito à diversidade cultural, étnica e religiosa, coibindo veementemente a discriminação ou o assédio moral.',
- bb40:'O CMN é um órgão eminentemente normativo e deliberativo. Cabe a ele expedir diretrizes para o funcionamento do SFN e regular a moeda e o crédito. A execução e fiscalização dessas regras ficam a cargo do Banco Central do Brasil (Bacen) e da CVM.',
- pa19:'A PGE-CE é um órgão público despersonalizado pertencente à estrutura central do Poder Executivo Estadual (Administração Direta). Por não ter personalidade jurídica própria distinta do Estado, atua por meio do fenômeno da desconcentração.',
- pa20:'A imperatividade (ou poder coercitivo) permite à Administração criar obrigações unilaterais impostas a terceiros. Difere da autoexecutoriedade (executar diretamente o ato sem intervenção do Judiciário) e da presunção de veracidade/legitimidade.',
- pa11:'O Mandado de Injunção (art. 5º, LXXI, CF/88) destina-se a combater a omissão legislativa (síndrome da inefetividade da norma constitucional), permitindo que o cidadão exercite um direito fundamental cujo gozo dependa de regulamentação.',
- pa12:'Esta é a definição expressa do artigo 127 da Constituição Federal de 1988 sobre o Ministério Público, dotado de autonomia funcional e administrativa para atuar como fiscal da lei e defensor da sociedade.',
- pa16:'O artigo 24 da CF/88 enumera a competência legislativa concorrente. Dica clássica de concurso: Direito Tributário, Financeiro, Penitenciário, Econômico e Urbanístico (memorizado pelo macete "PUFE-T") são de competência concorrente.',
- pd11:'A nomeação para cargos de provimento efetivo no âmbito do Poder Executivo Estadual é competência constitucional privativa do Governador do Estado, podendo ser delegada nos termos específicos da legislação quando permitido.',
- pd12:'Enquanto a Procuradoria-Geral e o Conselho Superior exercem funções de direção e normatização, as Procuradorias Especializadas atuam diretamente na ponta executando as atividades-fim e operacionais de representação judicial e pareceres.',
- pd14e:'Cabe às Procuradorias dos Estados a inscrição, controle de legalidade e cobrança (judicial e extrajudicial) dos créditos constitutivos da Dívida Ativa Estadual, atuando na recuperação dos haveres do erário.',
- pd13:'De acordo com o art. 105, I, "a", da Constituição Federal de 1988, compete ao Superior Tribunal de Justiça (STJ) processar e julgar, originariamente, nos crimes comuns, os Governadores dos Estados e do Distrito Federal.',
- pd14c:'A afirmação falsa é a alternativa D: a Constituição só admite a prisão civil do responsável pelo inadimplemento voluntário e inescusável de obrigação alimentícia (além do depositário infiel, hoje superado pela Súmula Vinculante 25). A alternativa B é verdadeira: a dissolução compulsória de associação exige decisão judicial transitada em julgado (art. 5º, XIX).'
-};
-const sub=(t,k)=>'<b>'+t+'.</b> '+RES[k];   /* subtítulo + resumo */
-
+   Questão: [pergunta, opções, índiceCorreto, índiceDoTópico, explicação] */
+const GG='Gis com Giz';
 const D=[
-{id:'pa',nome:'Administração',desc:'Cargos administrativos em prefeituras, estados e órgãos federais.',e:[
- {t:'Direito Administrativo e Constitucional (PGE-CE)',tp:[
-  {n:'Noções de Direito Administrativo',d:sub('Organização Administrativa','pa19')+'</p><p>'+sub('Atos Administrativos','pa20')},
-  {n:'Noções de Direito Constitucional',d:sub('Remédios Constitucionais','pa11')+'</p><p>'+sub('Funções essenciais à Justiça','pa12')+'</p><p>'+sub('Repartição de Competências','pa16')}],q:[
-  ['A Procuradoria-Geral do Estado do Ceará (PGE-CE), sob o ponto de vista da organização da Administração Pública, classifica-se como um(a):',['autarquia estadual dotada de personalidade jurídica própria','órgão integrante da Administração Pública Direta do Estado','empresa pública estadual com autonomia financeira','fundação pública de direito privado','entidade descentralizada da administração indireta'],1,0,RES.pa19,pa(19)],
-  ['Os atos administrativos são de cumprimento obrigatório para os administrados, independentemente da concordância do destinatário, impondo obrigações unilaterais. Esse atributo é a:',['Presunção de Legitimidade','Autoexecutoriedade','Imperatividade','Tipicidade','Razoabilidade'],2,0,RES.pa20,pa(20)],
-  ['Sempre que a falta de norma regulamentadora torne inviável o exercício dos direitos e liberdades constitucionais e das prerrogativas inerentes à nacionalidade, soberania e cidadania, conceder-se-á:',['Habeas Corpus','Mandado de Segurança','Ação Popular','Mandado de Injunção','Habeas Data'],3,1,RES.pa11,pa(11)],
-  ['A instituição permanente, essencial à função jurisdicional do Estado, incumbida da defesa da ordem jurídica, do regime democrático e dos interesses sociais e individuais indisponíveis, é o(a):',['Ministério Público','Defensoria Pública','Advocacia-Geral da União','Poder Judiciário','Conselho Nacional de Justiça'],0,1,RES.pa12,pa(12)],
-  ['Conforme o texto da Carta Magna, compete à União, aos Estados e ao Distrito Federal legislar concorrentemente sobre a seguinte matéria:',['Direito civil, comercial, penal e processual','Diretrizes e bases da educação nacional','Direito tributário, financeiro, penitenciário, econômico e urbanístico','Serviço postal e sistema monetário','Trânsito e transporte em todo o território nacional'],2,1,RES.pa16,pa(16)]]}]},
-{id:'pd',nome:'Tribunais',desc:'Cargos de técnico e analista no Judiciário.',e:[
- {t:'Estatuto, Lei Orgânica e Direito Constitucional (PGE-CE)',tp:[
-  {n:'Estatuto do Servidor / Lei Orgânica',d:sub('Provimento de Cargo Público','pd11')+'</p><p>'+sub('Estrutura Orgânica da PGE','pd12')+'</p><p>'+sub('Competências da PGE','pd14e')},
-  {n:'Noções de Direito Constitucional',d:sub('Prerrogativa de Foro','pd13')+'</p><p>'+sub('Direitos e Garantias Fundamentais','pd14c')}],q:[
-  ['A nomeação dos aprovados no concurso público para o cargo de Técnico de Representação Judicial da PGE-CE será feita em caráter efetivo por ato privativo do:',['Governador do Estado','Procurador-Geral do Estado','Presidente do Tribunal de Justiça','Secretário de Planejamento e Gestão','Corregedor-Geral da PGE'],0,0,RES.pd11,pd(11)],
-  ['As Procuradorias Especializadas (Judicial, Fiscal, da Administração Indireta e de PAD) que integram a PGE-CE classificam-se estruturalmente como órgãos de:',['Deliberação Colegiada Superior','Direção Superior e Assessoramento','Execução Programática (ou Instrumental)','Fiscalização e Controle Correicional','Consultoria Política Exclusiva'],2,0,RES.pd12,pd(12)],
-  ['Dentre as competências institucionais exclusivas da Procuradoria-Geral do Estado do Ceará em matéria de arrecadação e proteção fiscal, insere-se:',['lançar de ofício os impostos estaduais como IPVA e ICMS','julgar recursos administrativos fiscais em última instância','promover a cobrança judicial e extrajudicial da Dívida Ativa do Estado','fiscalizar o cumprimento das metas fiscais dos Municípios','emitir moedas e títulos da dívida pública estadual'],2,0,RES.pd14e,pd(14)],
-  ['A competência originária para processar e julgar os Governadores dos Estados e do Distrito Federal nos crimes comuns é do:',['Supremo Tribunal Federal (STF)','Superior Tribunal de Justiça (STJ)','Tribunal de Justiça do respectivo Estado (TJ)','Tribunal Regional Federal da respectiva Região (TRF)','Senado Federal'],1,1,RES.pd13,pd(13)],
-  ['Considerando as garantias fundamentais do art. 5º da CF/88, assinale a opção que apresenta uma afirmação FALSA:',['É livre a manifestação do pensamento, sendo vedado o anonimato.','A dissolução compulsória de associação exige decisão judicial transitada em julgado.','É livre a criação de associações e cooperativas, independentemente de autorização.','Não haverá prisão civil por dívida, salvo a do responsável pelo inadimplemento involuntário e escusável de obrigação alimentícia.','A lei não prejudicará o direito adquirido, o ato jurídico perfeito e a coisa julgada.'],3,1,RES.pd14c,pd(14)]]}]},
-{id:'bb',nome:'Área bancária',desc:'Bancos públicos, como escriturário e atendente.',e:[
- {t:'Conhecimentos do Banco do Brasil',tp:[
-  {n:'Atualidades do Mercado Financeiro',d:sub('Funções da Moeda','bb21')+'</p><p>'+sub('Tecnologia Blockchain','bb22')},
-  {n:'Matemática Financeira',d:sub('Juros Simples e Imposto','bb26'),v:[['aZcETuhXxPw','Juros Simples (Gis com Giz)']]},
-  {n:'Conhecimentos Bancários',d:sub('Código de Ética e Diversidade','bb31')+'</p><p>'+sub('Sistema Financeiro Nacional','bb40')}],q:[
-  ['Quando um indivíduo, ao comprar um produto em uma loja, efetua o pagamento utilizando papel-moeda (cash), a moeda estará cumprindo, nessa operação, a função de:',['reserva de valor','meio de troca (ou meio de pagamento)','unidade de conta','reserva de liquidez','padrão de pagamentos diferidos'],1,0,RES.bb21,bb(21)],
-  ['Existem grupos que trabalham cooperativamente para validar as transações na Blockchain, por meio da solução de cálculos complexos, e que concordam em dividir, proporcionalmente, recompensas de bloco entre eles. Tais grupos são denominados:',['Fazendas de Mineração (Mining Farms)','Pools de Mineração (Mining Pools)','Redes P2P (Peer-to-Peer)','Nós de Validação (Validator Nodes)','Corretoras de Criptoativos (Exchanges)'],1,0,RES.bb22,bb(22)],
-  ['O capital de um cliente ficou aplicado durante 50 dias a uma taxa de juros simples de 1,5% ao mês. Ao final, resgatou tudo e pagou R$ 4.500,00 referentes a 22,5% de IR sobre os juros (mês com 30 dias). O valor aplicado foi de:',['R$ 400.000,00','R$ 600.000,00','R$ 800.000,00','R$ 1.000.000,00','R$ 1.200.000,00'],2,1,RES.bb26,bb(26)],
-  ['Uma funcionária sofre afirmações desairosas sobre sua religião de matriz africana em reunião. Nos termos do Código de Ética do Banco do Brasil, o ambiente de trabalho e as relações interpessoais devem pautar-se pelo(a):',['restrição de manifestações culturais e religiosas dentro da empresa','respeito à diversidade, vedando qualquer preconceito ou discriminação','neutralidade absoluta, proibindo o uso de vestimentas religiosas','subordinação das convicções pessoais aos interesses comerciais do banco','tratamento preferencial a religiões tradicionais'],1,2,RES.bb31,bb(31)],
-  ['O Conselho Monetário Nacional (CMN) é o órgão superior do Sistema Financeiro Nacional. Entre suas atribuições institucionais, destaca-se:',['emitir papel-moeda e moeda metálica no país','fiscalizar diretamente as instituições financeiras públicas e privadas','fixar as diretrizes da política monetária, creditícia e cambial','executar os serviços de meio circulante e custódia de divisas','processar a liquidação de títulos e valores mobiliários'],2,2,RES.bb40,bb(40)]]}]}
+{id:'adm',nome:'Administração',desc:'Cargos administrativos em prefeituras, estados e órgãos federais.',e:[
+ {t:'Matemática básica',tp:[
+  {n:'Regra de três',d:'Método para descobrir um valor desconhecido a partir de grandezas proporcionais. Na regra direta, as duas grandezas crescem juntas; na inversa, uma cresce e a outra diminui.',v:[['CQFFaa9fmS0','Regra de três simples e composta: resumão ('+GG+')'],['mnle8NcUYkQ','Regra de três simples ('+GG+')'],['VS7D8aJH_k4','Regra de três simples inversa para concursos (Focus Concursos)']]},
+  {n:'Porcentagem',d:'Porcentagem é uma parte de 100. Assim, 20% = 20/100 = 0,2. Para achar a porcentagem de um valor, multiplique o valor pelo número decimal.'}],q:[
+  ['Se 3 canetas custam R$ 6, quanto custam 5 canetas?',['R$ 8','R$ 10','R$ 12','R$ 15'],1,0,'Cada caneta custa 6 ÷ 3 = R$ 2. Então 5 canetas custam 5 × 2 = R$ 10. É regra de três direta: mais canetas, mais dinheiro.'],
+  ['Quanto é 20% de 150?',['15','20','30','35'],2,1,'20% = 0,2, e 0,2 × 150 = 30. Dica: 10% de 150 é 15, e 20% é o dobro disso. Quem marcou 15 calculou só 10%.'],
+  ['4 operários fazem uma obra em 12 dias. Em quantos dias 6 operários, no mesmo ritmo, fazem a mesma obra?',['6','8','9','18'],1,0,'É regra de três inversa: mais operários, menos dias. O trabalho total é 4 × 12 = 48. Com 6 operários: 48 ÷ 6 = 8 dias. Quem marcou 18 tratou como regra direta.']]},
+ {t:'Administração geral',tp:[
+  {n:'Funções da administração',d:'As quatro funções clássicas são: planejar (definir objetivos), organizar (dividir tarefas e recursos), dirigir (orientar pessoas) e controlar (acompanhar resultados).'},
+  {n:'Princípios da administração pública',d:'O artigo 37 da Constituição lista cinco princípios: Legalidade, Impessoalidade, Moralidade, Publicidade e Eficiência (o famoso "LIMPE").'}],q:[
+  ['Qual destas NÃO é uma das quatro funções clássicas da administração?',['Planejar','Organizar','Vender','Controlar'],2,0,'As funções clássicas são planejar, organizar, dirigir e controlar. Vender é uma atividade da empresa, não uma função da administração.'],
+  ['O princípio da Legalidade diz que o administrador público deve:',['Fazer o que a lei permite','Fazer tudo o que não é proibido','Seguir apenas a opinião do chefe','Agir como achar melhor'],0,1,'O servidor público só pode fazer o que a lei autoriza. Fazer tudo o que a lei não proíbe vale para o cidadão comum, e essa é a pegadinha mais comum.'],
+  ['Na função "controlar", o objetivo é:',['Contratar pessoas','Comparar o resultado com o planejado e corrigir desvios','Definir a missão da empresa','Aumentar os preços'],1,0,'Controlar é verificar se o resultado bate com o planejado e corrigir desvios. Contratar pessoas faz parte de organizar, e definir a missão faz parte de planejar.']]}]},
+{id:'tri',nome:'Tribunais',desc:'Cargos de técnico e analista no Judiciário.',e:[
+ {t:'Português',tp:[
+  {n:'Plural das palavras',d:'Palavras terminadas em -ão podem fazer o plural em -ões (limão, limões), -ãos (mão, mãos) ou -ães (pão, pães). Não há regra única: é preciso memorizar os casos comuns.'},
+  {n:'Verbo haver',d:'Quando "haver" significa existir ou acontecer, ele é impessoal e fica sempre no singular: "Há problemas", "Houve festas".'},
+  {n:'Crase',d:'Crase é a fusão da preposição "a" com o artigo "a". Truque: troque a palavra feminina por uma masculina. Se der "ao", use crase.'}],q:[
+  ['Qual é o plural de "cidadão"?',['Cidadões','Cidadãos','Cidadães','Cidadãoes'],1,0,'Cidadão faz plural em -ãos, como mão e irmão. Não existe "cidadões".'],
+  ['Qual frase está correta?',['Houveram muitos problemas.','Houve muitos problemas.','Haviam muitos problemas.','Houveram-se muitos problemas.'],1,1,'Haver no sentido de existir é impessoal e fica no singular: "Houve". "Houveram" e "Haviam" estão errados nesse sentido.'],
+  ['Complete: "Fui ___ escola."',['a','à','as','às'],1,2,'Quem vai, vai A algum lugar (preposição), e "escola" aceita o artigo A (a escola). Preposição + artigo = à. Teste: "Fui ao colégio" pede "ao", então há crase.']]},
+ {t:'Direito Constitucional',tp:[
+  {n:'Poderes da União',d:'O artigo 2º da Constituição define que os Poderes da União são independentes e harmônicos entre si: Legislativo (faz as leis), Executivo (administra) e Judiciário (julga).'},
+  {n:'Direitos fundamentais',d:'O artigo 5º reúne os direitos e garantias fundamentais, como a igualdade de todos perante a lei, a liberdade e a vida.'},
+  {n:'Direitos políticos',d:'O voto é obrigatório de 18 a 70 anos. É facultativo (opcional) para analfabetos, maiores de 70 e jovens de 16 e 17 anos.'}],q:[
+  ['Quais são os três Poderes da União?',['Federal, Estadual e Municipal','Legislativo, Executivo e Judiciário','Civil, Penal e Militar','Presidente, Senado e Câmara'],1,0,'Os três Poderes (art. 2º) são Legislativo, Executivo e Judiciário. Federal, estadual e municipal são esferas de governo, e não Poderes.'],
+  ['"Todos são iguais perante a lei" expressa o princípio da:',['Igualdade','Publicidade','Eficiência','Anterioridade'],0,1,'Essa frase está no art. 5º e expressa o princípio da igualdade (isonomia). Publicidade e eficiência são princípios da administração pública.'],
+  ['Para quem tem mais de 70 anos, o voto é:',['Obrigatório','Proibido','Facultativo','Apenas por carta'],2,2,'Depois dos 70 anos o voto é facultativo: a pessoa vota se quiser. A obrigatoriedade vai dos 18 aos 70 anos.']]}]},
+{id:'ban',nome:'Área bancária',desc:'Bancos públicos, como escriturário e atendente.',e:[
+ {t:'Matemática financeira',tp:[
+  {n:'Juros simples',d:'Nos juros simples, o rendimento é calculado sempre sobre o valor inicial. Fórmula: J = C × i × t (capital × taxa × tempo).',v:[['aZcETuhXxPw','Juros Simples (Gis com Giz)']]},
+  {n:'Desconto e porcentagem',d:'Para calcular um desconto, ache a porcentagem do preço e subtraia. Preço final = preço × (1 − taxa de desconto).',v:[['3EefFSEF8Ds','Porcentagem, aumento e desconto (Dicasdemat Sandro Curió)']]}],q:[
+  ['R$ 1.000 a juros simples de 2% ao mês, por 3 meses. Quanto rendem de juros?',['R$ 20','R$ 60','R$ 600','R$ 1.060'],1,0,'J = 1.000 × 0,02 × 3 = R$ 60. Quem marcou R$ 1.060 somou o capital: isso é o montante, e não os juros.'],
+  ['Uma peça de R$ 200 tem desconto de 10%. Qual o preço final?',['R$ 180','R$ 190','R$ 170','R$ 20'],0,1,'10% de 200 = 20. Preço final = 200 − 20 = R$ 180. R$ 20 é só o valor do desconto.'],
+  ['R$ 400 a juros simples de 5% ao ano, por 1 ano. Quanto rendem?',['R$ 5','R$ 20','R$ 200','R$ 420'],1,0,'J = 400 × 0,05 × 1 = R$ 20. R$ 420 seria o montante (capital + juros).']]},
+ {t:'Informática básica',tp:[
+  {n:'Internet e navegadores',d:'Navegador é o programa usado para acessar sites, como Chrome, Firefox, Edge e Safari. Não confunda com mecanismo de busca (Google), que é um site.'},
+  {n:'Segurança digital',d:'Golpes digitais tentam enganar a pessoa para roubar dados. Boas práticas: senhas longas e diferentes, desconfiar de links recebidos e nunca passar códigos por mensagem.'}],q:[
+  ['Qual programa é um navegador de internet?',['Word','Excel','Chrome','Paint'],2,0,'Chrome é um navegador, usado para abrir sites. Word é editor de texto, Excel é planilha e Paint é programa de desenho.'],
+  ['Phishing é:',['Um tipo de planilha','Um golpe com mensagens falsas para roubar dados','Um antivírus','Um site de busca'],1,1,'Phishing é o golpe em que o criminoso se passa por banco, loja ou órgão público, por mensagem ou site falso, para roubar senhas e dados.'],
+  ['Qual senha é a mais segura?',['123456','senha','seunome1990','Tr#9mP!x2Lq7'],3,1,'Senha segura é longa e mistura letras maiúsculas, minúsculas, números e símbolos, sem nome nem datas pessoais. As outras são fáceis de adivinhar.']]}]}
 ];
-const VALIDOS=new Set(D.flatMap(a=>a.e.flatMap(e=>e.tp.map(t=>t.n))));  /* temas atuais (para o painel de desempenho) */
 
 /* ESTADO */
 const NOVO=()=>({ok:{},q:{},meta:{min:30,hora:'19:00',on:false}});
@@ -143,9 +129,9 @@ let S=NOVO(),U=null,db=null,P=null;
 const save=async()=>{if(!U)return;const{error}=await db.from('perfis').upsert({user_id:U.id,email:U.email,dados:{ok:S.ok,q:S.q},minutos:S.meta.min,hora:S.meta.hora,ativo:S.meta.on});if(error)alert('Não foi possível salvar: '+error.message)};
 const carregar=async()=>{const{data}=await db.from('perfis').select('*').eq('user_id',U.id).maybeSingle();
  if(data)S={ok:data.dados?.ok||{},q:data.dados?.q||{},meta:{min:data.minutos,hora:data.hora.slice(0,5),on:data.ativo}}};
-const need=e=>Math.ceil(e.q.length*0.6);   /* 60% de acertos para avançar (com 5 questões, 3 acertos) */
+const PASS=2;                                   /* acertos mínimos para avançar */
 const key=(i,j)=>D[i].id+j;
-const open=(i,j)=>j===0||(S.ok[key(i,j-1)]??-1)>=need(D[i].e[j-1]);
+const open=(i,j)=>j===0||(S.ok[key(i,j-1)]??-1)>=PASS;
 const enc=encodeURIComponent;
 let V=['home'],R=null;
 
@@ -168,24 +154,23 @@ ${D.map((a,i)=>`<button class="btn area" data-go="area,${i}"><span class="n">0${
 ${painel()}
 `;
 
-const painel=()=>{const m={};Object.values(S.q).filter(([t])=>VALIDOS.has(t)).forEach(([t,o])=>{m[t]=m[t]||[0,0];m[t][0]+=o;m[t][1]++});const k=Object.keys(m);if(!k.length)return'';
+const painel=()=>{const m={};Object.values(S.q).forEach(([t,o])=>{m[t]=m[t]||[0,0];m[t][0]+=o;m[t][1]++});const k=Object.keys(m);if(!k.length)return'';
 return '<h2>Meu desempenho por tema</h2><div class="box">'+k.map(t=>{const[a,n]=m[t],p=Math.round(100*a/n);return `<p style="margin:0 0 14px"><b>${t}</b>: ${a} de ${n} (${p}%) — <span class="tag ${p>=60?'ok':'bad'}">${p>=60?'Bom desempenho':'Precisa revisar'}</span><span class="bar"><i style="width:${p}%"></i></span></p>`}).join('')+'<p style="margin:0;color:var(--mute);font-size:.9rem">Baseado na sua última resposta em cada questão.</p></div>'};
-const area=i=>{const a=D[i];return back('home','Voltar às áreas')+`<h1>${a.nome}</h1><p>Estude cada etapa na ordem. Para avançar, acerte pelo menos 60% das questões do simulado (por exemplo, 3 de 5).</p>`+
+const area=i=>{const a=D[i];return back('home','Voltar às áreas')+`<h1>${a.nome}</h1><p>Estude cada etapa na ordem. Para avançar, acerte pelo menos ${PASS} de 3 questões do simulado.</p>`+
 a.e.map((e,j)=>{const s=S.ok[key(i,j)],lib=open(i,j);return `<h2>Etapa ${j+1}: ${e.t}</h2>
 <div class="box">${lib?e.tp.map(tema).join('')+
 `<button class="btn main" data-go="quiz,${i},${j}">Fazer o simulado da etapa ${j+1}</button>`+
-(s!==undefined?`<p class="tag ${s>=need(e)?'ok':'bad'}">Último resultado: ${s} de ${e.q.length} acertos${s>=need(e)?'. Etapa concluída!':'. Estude mais e tente de novo.'}</p>`:'')
+(s!==undefined?`<p class="tag ${s>=PASS?'ok':'bad'}">Último resultado: ${s} de ${e.q.length} acertos${s>=PASS?'. Etapa concluída!':'. Estude mais e tente de novo.'}</p>`:'')
 :`<p class="tag">Etapa bloqueada. Conclua a etapa ${j} para liberar.</p>`}</div>`}).join('')};
 
-const fonte=q=>q[5]?`<p class="fonte">Fonte: ${q[5]}</p>`:'';
 const quiz=(i,j)=>{const e=D[i].e[j];return back('area,'+i,'Voltar às etapas')+`<h1>Simulado: ${e.t}</h1><p>Escolha uma resposta em cada questão.</p><div id="qz">`+
-e.q.map((q,n)=>`<fieldset><legend>${n+1}. ${q[0]}</legend>${fonte(q)}${q[1].map((o,k)=>`<label class="op"><input type="radio" name="q${n}" value="${k}"> <span>${o}</span></label>`).join('')}</fieldset>`).join('')+
+e.q.map((q,n)=>`<fieldset><legend>${n+1}. ${q[0]}</legend>${q[1].map((o,k)=>`<label class="op"><input type="radio" name="q${n}" value="${k}"> <span>${o}</span></label>`).join('')}</fieldset>`).join('')+
 `</div><button class="btn main" data-act="send,${i},${j}">Ver resultado e gabarito</button><p id="erro" class="bad tag" role="alert"></p>`};
 
-const result=()=>{const{i,j,a}=R,e=D[i].e[j],n=a.filter((x,k)=>x===e.q[k][2]).length,pass=n>=need(e),last=j===D[i].e.length-1;
+const result=()=>{const{i,j,a}=R,e=D[i].e[j],n=a.filter((x,k)=>x===e.q[k][2]).length,pass=n>=PASS,last=j===D[i].e.length-1;
 return `<h1>Você acertou ${n} de ${e.q.length}</h1>
 <p class="tag ${pass?'ok':'bad'}">${pass?(last?'Parabéns! Você concluiu todas as etapas desta área.':'Muito bem! A próxima etapa foi liberada.'):'Ainda não foi desta vez. Revise o conteúdo e tente de novo.'}</p>
-<h2>Gabarito</h2>`+e.q.map((q,k)=>`<div class="box"><p><b>${k+1}. ${q[0]}</b></p>${fonte(q)}
+<h2>Gabarito</h2>`+e.q.map((q,k)=>`<div class="box"><p><b>${k+1}. ${q[0]}</b></p>
 <p class="tag ${a[k]===q[2]?'ok':'bad'}">${a[k]===q[2]?'Você acertou':'Você errou'}</p>
 <p>Sua resposta: ${q[1][a[k]]}<br>Resposta correta: <b>${q[1][q[2]]}</b></p><p><b>Explicação:</b> ${q[4]}</p></div>`).join('')+
 (pass&&!last?`<button class="btn main" data-go="area,${i}">Ir para a próxima etapa</button>`:'')+
@@ -254,7 +239,7 @@ document.addEventListener('click',async ev=>{
   if(!email||!password)return msg.textContent='Digite o e-mail e a senha.';
   if(act==='criar'&&!(password.length>=8&&/[a-z]/.test(password)&&/[A-Z]/.test(password)&&/\d/.test(password)&&/[^A-Za-z0-9]/.test(password)))return msg.textContent='A senha não cumpre os requisitos acima.';
   msg.textContent='Aguarde...';
-  const r=await (act==='entrar'?db.auth.signInWithPassword({email,password}):db.auth.signUp({email,password,options:{emailRedirectTo:location.origin+location.pathname}}));
+  const r=await (act==='entrar'?db.auth.signInWithPassword({email,password}):db.auth.signUp({email,password}));
   if(r.error)return msg.textContent='Não foi possível continuar: '+r.error.message;
   if(!r.data.session)return msg.textContent='Conta criada! Abra o link que enviamos ao seu e-mail e depois clique em Entrar.';
   return iniciar(r.data.session.user)}
