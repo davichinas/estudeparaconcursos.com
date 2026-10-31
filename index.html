@@ -72,10 +72,12 @@ input:focus{outline:none;border-color:var(--pri);box-shadow:0 0 0 3px rgba(125,2
 .social .btn{margin:0;display:flex;align-items:center;justify-content:center;gap:10px}
 .social svg{width:22px;height:22px;flex:none}
 [hidden]{display:none!important}
-.pw{display:flex;gap:8px;margin:6px 0 16px}
-.pw input[type=password],.pw input[type=text]{margin:0;width:auto;flex:1;min-width:0}
-.ver{flex:none;font:inherit;font-weight:700;color:#cbd8ea;background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:10px;padding:0 14px;cursor:pointer;transition:background .2s,color .2s,border-color .2s}
-.ver:hover,.ver:focus-visible{background:var(--pri);color:#000;border-color:var(--pri)}
+.pw{position:relative;margin:6px 0 16px}
+.pw input[type=password],.pw input[type=text]{margin:0;width:100%;padding-right:54px}
+.ver{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:42px;height:42px;display:flex;align-items:center;justify-content:center;background:none;border:0;border-radius:8px;color:var(--mute);cursor:pointer;transition:color .2s,background .2s}
+.ver:hover,.ver:focus-visible{color:var(--pri);background:rgba(125,211,252,.12)}
+.ver svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ver.on .o,.ver:not(.on) .x{display:none}
 @media (prefers-reduced-motion:reduce){.btn{transition:none}.btn:hover{transform:none}}
 </style>
 </head>
@@ -205,7 +207,7 @@ return `<h1>Você acertou ${n} de ${e.q.length}</h1>
 let REC=location.hash.includes('type=recovery');  /* true = pessoa chegou pelo link de "esqueci minha senha" */
 const senhaForte=p=>p.length>=8&&/[a-z]/.test(p)&&/[A-Z]/.test(p)&&/\d/.test(p)&&/[^A-Za-z0-9]/.test(p);
 const traduz=m=>/Invalid login credentials/i.test(m)?'E-mail ou senha incorretos.':/not confirmed/i.test(m)?'Confirme seu e-mail antes de entrar.':/rate limit/i.test(m)?'Muitas tentativas. Aguarde um pouco e tente de novo.':/different from the old/i.test(m)?'A nova senha precisa ser diferente da atual.':/signups are disabled/i.test(m)?'Os cadastros estão desativados no momento.':'Não foi possível continuar: '+m;
-const campoSenha=(id,ac)=>`<div class="pw"><input id="${id}" type="password" autocomplete="${ac}"><button type="button" class="ver" data-act="ver,${id}" aria-pressed="false" aria-label="Mostrar senha">Mostrar</button></div>`;
+const campoSenha=(id,ac)=>`<div class="pw"><input id="${id}" type="password" autocomplete="${ac}"><button type="button" class="ver" data-act="ver,${id}" aria-pressed="false" aria-label="Mostrar senha"><svg class="o" viewBox="0 0 24 24" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><svg class="x" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><path d="M1 1l22 22"/></svg></button></div>`;
 const reqHtml=c=>`<div class="req ${c}"${c?' hidden':''}><span class="ast">*</span> Requisitos da senha:<ul><li>Mínimo de 8 caracteres</li><li>Uma letra maiúscula</li><li>Uma letra minúscula</li><li>Um número</li><li>Um símbolo (como ! ou @)</li></ul></div>`;
 const modo=cad=>{CAD=cad;document.querySelectorAll('.so-cad').forEach(e=>e.hidden=!cad);document.querySelectorAll('.so-login').forEach(e=>e.hidden=cad);document.getElementById('msg').textContent=''};
 let CAD=false;  /* true = formulário em modo "criar conta" */
@@ -233,11 +235,13 @@ const av=(p,t)=>p?.foto?`<img class="av" style="--s:${t}px" src="${esc(p.foto)}"
 const NAV=[['home','Estudar'],['lembrete','Lembrete'],['forum','Fórum'],['perfil','Meu perfil']];
 const SEC={home:'home',area:'home',quiz:'home',result:'home',lembrete:'lembrete',forum:'forum',novo:'forum',topico:'forum',perfil:'perfil'};
 
+const statusLembrete=()=>S.meta.on?`Lembrete ativo: ${S.meta.min} min por dia, e-mail às ${S.meta.hora}.`:'Lembrete desativado: você não está recebendo e-mails. Para voltar a receber, salve a meta de novo.';
 const lembrete=()=>`<h1>Lembrete de estudo</h1><div class="box"><p>Diga quanto tempo você quer estudar por dia e a que horas quer ser lembrado.</p>
 <div class="row"><div><label for="min">Minutos por dia</label><input id="min" type="number" min="5" max="600" step="5" value="${S.meta.min}"></div>
 <div><label for="hora">Horário do lembrete</label><input id="hora" type="time" value="${S.meta.hora}"></div></div>
 <p style="margin-top:14px"><button class="btn main" data-act="meta" style="margin:0">Salvar minha meta</button></p>
-<p id="metaMsg" class="tag" role="status">${S.meta.on?`Meta ativa: ${S.meta.min} min por dia, lembrete às ${S.meta.hora}.`:''}</p>
+<p><button id="cancelar" class="btn main" data-act="cancelar" style="margin:0"${S.meta.on?'':' hidden'}>Cancelar lembrete por e-mail</button></p>
+<p id="metaMsg" class="tag" role="status">${statusLembrete()}</p>
 <p style="color:var(--mute);font-size:.9rem;margin:0">O lembrete é enviado por e-mail, no horário escolhido (horário de Brasília), mesmo com o site fechado.</p></div>`;
 
 const perfil=()=>`<h1>Meu perfil</h1><div class="box"><div class="who" style="margin-bottom:18px">${av(P,96)}<div><b>${esc(P.nome)}</b><br><small style="color:var(--mute)">${esc(U.email)}</small></div></div>
@@ -274,7 +278,7 @@ document.addEventListener('click',async ev=>{
  const b=ev.target.closest('[data-go],[data-act]');if(!b)return;
  if(b.dataset.go){V=b.dataset.go.split(',');return render()}
  const[act,i,j]=b.dataset.act.split(',');
- if(act==='ver'){const el=document.getElementById(i),mostra=el.type==='password';el.type=mostra?'text':'password';b.textContent=mostra?'Ocultar':'Mostrar';b.setAttribute('aria-pressed',mostra);b.setAttribute('aria-label',mostra?'Ocultar senha':'Mostrar senha');return}
+ if(act==='ver'){const el=document.getElementById(i),mostra=el.type==='password';el.type=mostra?'text':'password';b.classList.toggle('on',mostra);b.setAttribute('aria-pressed',mostra);b.setAttribute('aria-label',mostra?'Ocultar senha':'Mostrar senha');return}
  if(act==='voltar')return modo(false);
  if(act==='criar'&&!CAD)return modo(true);   /* 1º clique: mostra os requisitos; 2º clique: cria a conta */
  if(act==='entrar'||act==='criar'||act==='discord'){
@@ -317,7 +321,8 @@ document.addEventListener('click',async ev=>{
   S.ok[key(+i,+j)]=pts;D[i].e[j].q.forEach((q,k)=>S.q[key(+i,+j)+'_'+k]=[D[i].e[j].tp[q[3]].n,a[k]===q[2]?1:0]);await save();R={i:+i,j:+j,a};V=['result'];render()}
  if(act==='meta'){
   S.meta={min:+document.getElementById('min').value||30,hora:document.getElementById('hora').value||'19:00',on:true};await save();
-  document.getElementById('metaMsg').textContent=`Meta salva: ${S.meta.min} min por dia, e-mail de lembrete às ${S.meta.hora}.`}
+  document.getElementById('metaMsg').textContent='Meta salva! '+statusLembrete();document.getElementById('cancelar').hidden=false;return}
+ if(act==='cancelar'){S.meta.on=false;await save();document.getElementById('metaMsg').textContent=statusLembrete();document.getElementById('cancelar').hidden=true;return}
 });
 
 
